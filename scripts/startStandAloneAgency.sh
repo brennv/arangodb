@@ -37,7 +37,7 @@ if [ $NRAGENTS -gt 1 ]; then
            --agency.size $NRAGENTS \
            --agency.supervision true \
            --agency.supervision-frequency $SFRE \
-           --agency.wait-for-sync false \
+           --agency.wait-for-sync true \
            --agency.election-timeout-min $MINP \
            --agency.election-timeout-max $MAXP \
            --database.directory agency/data$port \
@@ -64,7 +64,7 @@ build/bin/arangod \
     --agency.size $NRAGENTS \
     --agency.supervision true \
     --agency.supervision-frequency $SFRE \
-    --agency.wait-for-sync false \
+    --agency.wait-for-sync true \
     --agency.election-timeout-min $MINP \
     --agency.election-timeout-max $MAXP \
     --database.directory agency/data$(( $BASE + $aid )) \
