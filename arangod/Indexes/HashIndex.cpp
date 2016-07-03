@@ -42,7 +42,6 @@ LookupBuilder::LookupBuilder(
     std::vector<std::vector<arangodb::basics::AttributeName>> const& fields)
     : _builder(trx), _usesIn(false), _isEmpty(false), _inStorage(trx) {
   TRI_ASSERT(node->type == aql::NODE_TYPE_OPERATOR_NARY_AND);
-  SimpleAttributeEqualityMatcher matcher(fields);
   _coveredFields = fields.size();
   TRI_ASSERT(node->numMembers() == _coveredFields);
 
@@ -891,7 +890,8 @@ bool HashIndex::supportsFilterCondition(
     arangodb::aql::AstNode const* node,
     arangodb::aql::Variable const* reference, size_t itemsInIndex,
     size_t& estimatedItems, double& estimatedCost) const {
-  SimpleAttributeEqualityMatcher matcher(fields());
+  
+  SimpleAttributeEqualityMatcher matcher(_fields);
   return matcher.matchAll(this, node, reference, itemsInIndex, estimatedItems,
                           estimatedCost);
 }
@@ -934,6 +934,7 @@ IndexIterator* HashIndex::iteratorForSlice(arangodb::Transaction* trx,
 arangodb::aql::AstNode* HashIndex::specializeCondition(
     arangodb::aql::AstNode* node,
     arangodb::aql::Variable const* reference) const {
-  SimpleAttributeEqualityMatcher matcher(fields());
+  
+  SimpleAttributeEqualityMatcher matcher(_fields);
   return matcher.specializeAll(this, node, reference);
 }
